@@ -1,6 +1,6 @@
 # Clean-Code # 
 This is a summary of the famous book "Clean Code-A Handbook of Agile Software Craftsmanship" by Robert C. Martin
-## Chapter 2 - Meaningful Names ## 
+### Chapter 2 - Meaningful Names ###
 #### Use Intention-Revealing Names ####
 * The name of the variable, function, or class should tell you why it exists, what it does, and how it is used. 
 * If a name requires a comment, then the name does not reveal its intent.
