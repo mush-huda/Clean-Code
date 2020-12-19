@@ -57,6 +57,21 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 ## Chapter 9 - Unit Tests ## 
 
 ## Chapter 10 - Classes ## 
+### Class Organzation ###
+* According to Java Convention, a class should begin with a list of variables. 
+    * `public static constants` should come first.
+    * Then `private static` variables.
+    * Followed by `private` instance variables.
+    * There is seldom a good reason to have `public` variables.
+#### Encapsulation ####
+* It's good to keep variables and utility functions `private` but sometimes we need to make them `protected` so that they can be accessed by a test. But loosening encapsulation is always a last resort. 
+### Classes Should Be Small! ###
+### The Single Responsibility Principle ###
+### Cohesion ###
+### Maintaining Cohesion in Many Small Classes ###
+### Organizing for Change ###
+### Isolating from Change ###
+
 
 ## Chapter 11 - Systems ## 
 
