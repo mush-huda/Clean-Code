@@ -43,6 +43,35 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 #### Don't Add Gratuitous Context ####
 * Add no more context to a name than is necessary. In an imaginary application called "Gas Station Deluxe", it is bad idea to prefix every class with `GSD`like `GSDAccountAddress`. 
 ## Chapter 3 - Functions ## 
+#### Small! ####
+* The first rule of functions is that the should be small. 
+* The second rule of functions is that they should be smaller than that.
+##### Blocks and Indenting #####
+* Blocks within `if` statements, `else` statements, `while` statements, and so on should be one line long. Probably that line should be a function call. Not only does this keep the enclosing function small. but it also adds documentary value because the function called within the block can have a nicely descriptive name. 
+#### Do One Thing ####
+##### Sections within Functions #####
+#### One Level of Abstraction per Function ####
+##### Reading Code from Top to Bottom: The Stepdown Rule #####
+#### Switch Statements ####
+#### Use Descriptive Names ####
+#### Function Arguments ####
+##### Common Monadic Forms #####
+##### Flag Arguments #####
+##### Dyadic Functions #####
+##### Triads #####
+##### Argument Lists #####
+##### Verbs and Keywords #####
+#### Have No Side Effects ####
+##### Output Arguments #####
+#### Command Query Separation ####
+#### Prefer Exceptions to Returning Error Codes ####
+##### Extract Try/Catch Blocks #####
+##### Error Handling Is One Thing #####
+##### The Error.java Dependency Magnet #####
+#### Structured Programming ####
+#### How Do You Write Functions Like This? ####
+#### Conclusion ####
+#### SetupTeardownIncluder ####
 
 ## Chapter 4 - Comments ## 
 
@@ -79,11 +108,33 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 * In general the more variables a nethod manipulates the more cohesive that method is to its class.
 * A class in which each variable is used by each method is maximally cohesive. 
 * We would like cohesion to be high. When cohesion is high, it means that the methods and variables of the class are co-dependent and hang together as a logical whole.
-* You should try to separate the variables and methods into two or more classes such that the newclasses are more cohesive. 
 #### Maintaining Cohesion in Many Small Classes ####
+* You should try to separate the variables and methods into two or more classes such that the newclasses are more cohesive. 
+* When classes lose cohesion, split them!
 #### Organizing for Change ####
+* For most systems, change is continual.
+* We want to structure our systems so tat we muck with as little as possible when we update them with new or changed features. 
+* In an ideal system, we incorporate new features by extending the system, not by making modifications to existing code. 
+* *Open-Closed Principle(OCP)* states that classes should be open for extension but closed for modification. 
 #### Isolating from Change ####
+* Needs will change, therefore code will change. 
+* A Client class depending upon concerete details is at risk when those details change. We can introduce interfaces and abstract classes to help isolate the impact of those details. 
+* Dependencies upon concrete details challenges for testing our system. 
+* Instead of designing `Portfolio` so that it directly depends upon `TokyoStockExchange`, we create an Interface, `StockExchange`, that declares a single method. 
 
+```
+public interface StockExchange {
+    Money currentPrice(String symbol)
+}
+
+public Portfolio {
+    private StockExchange exchange;
+    public Portfolio(StockExchange exchange) {
+       this.exchange = exchange; 
+    }
+}
+```
+* By minimizing coupling in this way, our classes adhere to another class design principle known as *Dependency Inversion Principle(DIP)*. DIP says that our classes should depend upon abstraction, not on concrete details. 
 
 ## Chapter 11 - Systems ## 
 
