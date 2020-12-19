@@ -1,7 +1,7 @@
 # Clean-Code # 
 This is a summary of the famous book "Clean Code-A Handbook of Agile Software Craftsmanship" by Robert C. Martin
 ### Chapter 2 - Meaningful Names ###
-### Use Intention-Revealing Names ###
+#### Use Intention-Revealing Names ####
 * The name of the variable, function, or class should tell you why it exists, what it does, and how it is used. 
 * If a name requires a comment, then the name does not reveal its intent.
 #### Avoid Disinformation ####
@@ -12,7 +12,7 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 * The word `variable` should never appear in a variable name. The word `table` should never appear in a table name. 
 #### Use Pronounceable Names ####
 * Don't use `genymdhms`(generation date,year,month,day,hour,min,sec) but use pronounceable names like `generationTimestamp`
-#### Use Searable Names ####
+#### Use Searchable Names ####
 * Single-letter names and numeric constants are difficult to locate across a body of text. Use searchable names like `WORK_DAYS_PER_WEEK = 5` instead of `i = 5`
 #### Avoid Encodings ####
 * If you must do encoding then encode implementation. Example: Don't encode interfaces like `IShapeFactory`. Keep interface as it is `ShapeFactory` and encode implementation `ShapeFactoryImp`.
@@ -57,20 +57,32 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 ## Chapter 9 - Unit Tests ## 
 
 ## Chapter 10 - Classes ## 
-### Class Organzation ###
+#### Class Organzation ####
 * According to Java Convention, a class should begin with a list of variables. 
     * `public static constants` should come first.
     * Then `private static` variables.
     * Followed by `private` instance variables.
     * There is seldom a good reason to have `public` variables.
-#### Encapsulation ####
+##### Encapsulation #####
 * It's good to keep variables and utility functions `private` but sometimes we need to make them `protected` so that they can be accessed by a test. But loosening encapsulation is always a last resort. 
-### Classes Should Be Small! ###
-### The Single Responsibility Principle ###
-### Cohesion ###
-### Maintaining Cohesion in Many Small Classes ###
-### Organizing for Change ###
-### Isolating from Change ###
+#### Classes Should Be Small! ####
+* The first rule of classes is that they should be small.
+* The second rule of classes is tht they should be smaller than that.
+* With functions we measured size by counting physical lines. With classes we use a different measure. We count *responsibilities*
+* The name of the class should describe what responsibilities it fulfills.
+* We should also be able to write a brief description of the class in about 25 words, without using the words "if", "and", "or", or "but". 
+#### The Single Responsibility Principle ####
+* The *Single Responsibiliy Principle(SRP)* states that a class or module should have one and only one *reason to change*.
+* We want out systems to be composed of many small clsses, not a few large ones. Each small class encapsulates a single responsibility, has a single reason to change, and collaborates with a few others to achieve the desired system behaviors.
+#### Cohesion ####
+* Classes should have a small number of instance variables. Each of the methods of a class should manipulate one or more of those variables. 
+* In general the more variables a nethod manipulates the more cohesive that method is to its class.
+* A class in which each variable is used by each method is maximally cohesive. 
+* We would like cohesion to be high. When cohesion is high, it means that the methods and variables of the class are co-dependent and hang together as a logical whole.
+* You should try to separate the variables and methods into two or more classes such that the newclasses are more cohesive. 
+#### Maintaining Cohesion in Many Small Classes ####
+#### Organizing for Change ####
+#### Isolating from Change ####
 
 
 ## Chapter 11 - Systems ## 
