@@ -49,19 +49,67 @@ This is a summary of the famous book "Clean Code-A Handbook of Agile Software Cr
 ##### Blocks and Indenting #####
 * Blocks within `if` statements, `else` statements, `while` statements, and so on should be one line long. Probably that line should be a function call. Not only does this keep the enclosing function small. but it also adds documentary value because the function called within the block can have a nicely descriptive name. 
 #### Do One Thing ####
+* Functions should do one thing. They should do it well. The should do it only.
 ##### Sections within Functions #####
+* Functions that do one thing cannot be reasonably divided into many sections. 
 #### One Level of Abstraction per Function ####
+* In order to make sure our functions are doing "one thing", we need to make sure that the statements within our function are all at the same level of abstraction. 
+* Mixing levels of abstraction within a function is always confusing. 
 ##### Reading Code from Top to Bottom: The Stepdown Rule #####
+* *The Stepdown Rule:* We want the code to read like a top-down narrative. We want every function to be followed by those at the next level of abstraction so that we can read the program, descending on level of abstraction ata a time as we read down the list of functions. 
 #### Switch Statements ####
+* It's hard to make a `switch` statment that does on thing. By their nature, `switch` statements always do `N` things.
+
+```
+public Money calculatePay(Employee e) throws InvalidEmployeeType {
+  switch(e.type)
+     case COMMISSIONED:
+        return calculateCommissionedPay(e);
+     case HOURLY:
+        return calculateHourlyPay(e);
+     case SALARIED:
+        return calculateSalariedPay(e);
+     default:
+        throw new InvalidEmployeeType(e.type);
+}
+```
+* There are several problems with this function: it's large, it does more than one thing, it has more than one reason to change, it must change whenever new types are added.
+* The solution to this problem is to bury the `switch` statement in the basement of an `ABSTRACT FACTORY`, and never let anyone see it. The factory will use the `switch` statment to create appropriate instances of the derivatives of `Employee`, and the various functions, such as `calculatePay`, `isPayday`, and `deliverPay`, will be dispatched polymorphically through the `Employee` interface.
 #### Use Descriptive Names ####
+* The smaller and more focused a function is, the easier it is to choose a descriptive name. 
+* A long descriptive name is better than a short enigmatic name. 
+* Don't be afraid to spend time choosing a name. Indeed, you should try several diffent names and read the code with each in place. 
+* Be consitent in your names. Use the same phrases, nouns, and verbs in the function names you choose for your modules. For example: `includeSetupAndTeardownPages`, `includeSetupPages`, `includeSuiteSetupPages`.
 #### Function Arguments ####
+* The ideal number of arguments for a function is zero(niladic). Next comes one(monadic), followed closely by two(dyadic). Three arguments(triadic) should be avoided where possible. 
+* More that three(polyadic) arguments require very special justification - and then shouldn't be used anyway.
+* Arguments are even harder for a testing point of view. 
+* Using an output argument instead of a return value is confusing and hard to understand. Avoid them. 
 ##### Common Monadic Forms #####
+* There are two very common reasons to pass a single argument into a function. 
+* You may be asking a question about that argument, as in `boolean fileExists("MyFile")`
+* Or you may be operating on that argument, transforming it into something else and returning it. For example, `InputStream fileOpen("MyFile")` transforms a file name `String` into an `InputStream` return value.
+* A somewhat less common, but still very useful form for a monadic function is an event. In this form there is an input argument but no output argument. The overall program is meant to interpret the function call as an event and use the argument to alter the state of the system. For example, `void passwortAttemptFailedNtime(int attempts)`. 
 ##### Flag Arguments #####
+* Flag arguments are ugly. Passing a boolean into a function is a truly terrible practive. 
+* It immediately complicates the signature of the method, loudly proclaiming that this function does more than one thing. It does one thing if the flag is `true` and another if the flag is `false`.
 ##### Dyadic Functions #####
+* A function with two arguments is harder to understand than a monadic function. 
+* There are times when two arguments are appropriate. For example, `Point(0, 0)` is perfectly reasonable. Cartesian points naturally take two arguments. The two arguments in this case are ordered components of a single value. 
+* When possible convert dyads into monads. For example, `writeField(outputStream, name)` can be transformed as `writeField(name)` by making the `outputStream` a member variable of the class so that you don't have to pass it. Or you might extract a new class like `FieldWriter` that takes the `outputStream` in its constructor and has a `write` method.  
 ##### Triads #####
-##### Argument Lists #####
+* Functions that take three arguments are significantly harder to understand than dyads. Think very carefully before creating a triad. 
+##### Argument Objects #####
+* When a function seems to need more than two or three arguments, it is likely that some of those arguments ought to be wrapped into a class of their own.
+```
+  Circle makeCircle(double x, double y, double radius);
+  Circle makeCircle(Point center, double radius);
+```
 ##### Verbs and Keywords #####
+* In the case of monad, the function and argument should form a very nice verb/noun pair. For example, `write(name)` is very evocative. Whatever the "name" thing is, it is being "written".
 #### Have No Side Effects ####
+* A function should not have hidden side effects. A function `checkPassword(String userName, String password)` should only check if the password is correct or not. It should not do any hidden tasks like `Session.initialize()`.
+* In this case we might rename the function `checkPasswordAndInitializeSession`, though that certainly violates Single Responsibility Principle. 
 ##### Output Arguments #####
 #### Command Query Separation ####
 #### Prefer Exceptions to Returning Error Codes ####
