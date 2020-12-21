@@ -1,5 +1,5 @@
 # Clean-Code # 
-This is a summary of the famous book "Clean Code-A Handbook of Agile Software Craftsmanship" by Robert C. Martin
+This is a summary of the famous book *"Clean Code-A Handbook of Agile Software Craftsmanship"* by *Robert C. Martin*. 
 ### Chapter 2 - Meaningful Names ###
 #### Use Intention-Revealing Names ####
 * The name of the variable, function, or class should tell you why it exists, what it does, and how it is used. 
@@ -179,26 +179,59 @@ Do:
 * If you are writing a public API, then you should certainly write good javadocs for it. 
 #### Bad Comments ####
 ##### Mumbling #####
+* If you decide to write a comment, then spend the time necessary to make sure it is the best comment you can write.
 ##### Redundant Comments #####
+* Don't write redundant comments. 
 ##### Misleading Comments #####
+* Don't write comments that are not accurate. Don't give false information to the reader.
 ##### Mandated Comments #####
+* It's just plain silly to have a rule that says that every function must have a javadoc, or every variable must have a comment. 
+* Comments like this just clutter up the code, propagate lies, and lend to general confusion and disorganization.
 ##### Journal Comments #####
+* Sometimes people add a comment to the start of a module every time they edit it. These comments accumulate as a kind of journal, or log, of every change that has ever been made. 
+* Source code control systems can take care of these things. Don't add journal comments into your code. 
 ##### Noise Comments #####
-##### Scary Noise #####
+* Noise comments restate the obvious and provide no new information.
+```
+/** The day of the month **/
+   priavate int dayOfMonth;
+```
 ##### Don't Use a Comment When You Can Use a Function or Variable #####
+* Don't:
+```
+ if (smodule.getDependSubsystems().contains(subSysMod.getSubSytem()))
+```
+ Do:
+ 
+ ```
+  ArrayList moduleDependees = smodule.getDependSubsystems();
+  String ourSubSystem = subSysMod.getSubSystem();
+  if (moduleDependees.contains(ourSubSystem))
+ ```
 ##### Position Markers #####
+* Sometimes programmers like to mark a particular position in a source file. They are called banners.
+* Use banners carefully. 
 ##### Closing Brace Comments #####
+* Sometimes programmers put special comments on closing braces. 
+* The might make sense for long functions with deeply nested strutures. But small and encapsulated functions don't need comments. They are self explaining.
 ##### Attributes and Bylines #####
+* Don't add bylines like `/* Added by Rick */`. 
+* Source code control system can handle these things.
 ##### Commented-Out Code #####
+* Few practices are as odious as commenting-out code. Don't do this!!
+* Again, source code control systems will remember the code for us. We don't have to comment it out any more. Just delete the code!
 ##### HTML Comments #####
+* If comments are going to be extracted by some tool (like Javadoc) to appear in Web page, then it should be the responsibility of that tool, and not the programmer, to adorn the comments with appropriate HTML.
 ##### Nonlocal Information #####
+* If you must write a comment, then make sure it describes the code it appears near. Don't offer systemwide information in the context of a local comment. 
 ##### Too Much Information #####
+* Don't put interesting historical discussions or irrelevant descriptions of details into your comments.
 ##### Inobvious Connection #####
+* The purpose of a comment is to explain code that does not explain itself. It is a pity when a comment needs its own explanation.
 ##### Function Headers #####
+* Short functions don't need much description. A well-chosen name for a small function that does one thing ususally better than a comment header.
 ##### Javadocs in Nonpublic Code #####
-
-
-
+* Generating javadoc pages for the classes and functions inside a system is not generally useful, and the extra formality of the javadoc comments amounts to little more than cruft and distraction. 
 ## Chapter 5 - Formatting ## 
 
 ## Chapter 6 - Objects and Data Structures ## 
