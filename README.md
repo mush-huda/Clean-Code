@@ -111,15 +111,35 @@ public Money calculatePay(Employee e) throws InvalidEmployeeType {
 * A function should not have hidden side effects. A function `checkPassword(String userName, String password)` should only check if the password is correct or not. It should not do any hidden tasks like `Session.initialize()`.
 * In this case we might rename the function `checkPasswordAndInitializeSession`, though that certainly violates Single Responsibility Principle. 
 ##### Output Arguments #####
+* In the days before object oriented programming it was sometimes necessary to have output arguments. However, much of the need for output arguments disappears in OO languages because `this` is intended to act as an output argument. 
+* Anything that forces you to check the function signature is equivalent to a double-take. It's cognitive break and should be avoided. 
 #### Command Query Separation ####
+* Functions should either do something or answer something, but not both. 
+* Either your function should change the state of an object, or it should return some information about that object. Doing both often leads to confusion. 
+* Always separate the command from the query so that the ambiguity cannot occur. 
 #### Prefer Exceptions to Returning Error Codes ####
+* Returning error codes from command functions is a subtle violation of command query separation. It promotes commands being used as expressions in the predicates of `if`statements.
 ##### Extract Try/Catch Blocks #####
+* Try/Catch blocks are ugly in thier own right. They confuse the structure of the code and mix error processing. So it's better to extract the bodies of the `try` and  `catch` blocks out into functions of their own. 
 ##### Error Handling Is One Thing #####
+* Error handling is one thing. Thus, a function that handles errors should do nothing else.
+* This implies that if the keyword `try` exists in a function, it should be the very first word in the function and that there should be nothing after the `catch/finally` blocks.
 ##### The Error.java Dependency Magnet #####
+* Returning error codes usually implies that there is some class or enum in which all the error codes are defined. 
+* Classes like this are a *dependency management*. Many other classes must import and use them. Thus, when the `Error enum` changes, all those other classes need to be recompiled and redeployed. 
+* When you use exceptions rather than error codes, then new exceptions are *derivatives* of the exception class. They can be added without forcing any recompilation or redeployment. 
+#### Don't Repeat Yourself ####
+* Duplication may be the root of all evil in software. 
+* Encapsulate the duplicates and create smaller fucntions.
+* This is *DRY* principle. 
 #### Structured Programming ####
+* Edsger Dijkstra's rules of structured programming states that every function, and every block within a function, should have one entry and one exit. 
+* Following these rules means that there should only be one `return` statement in a function, no `break` or `continue` statements in a loop, and never,ever, any `goto` statements.
+* It is only in larger functions that such rules provide significant benefits. 
+* If you keep your functions small, then the occasional multiple `return`, `break`, or `continue` statement does no harm.
 #### How Do You Write Functions Like This? ####
-#### Conclusion ####
-#### SetupTeardownIncluder ####
+* Don't expect to write functions in a perfect way from the start. Refactor, refactor and refactor!
+* Master programmers think of systems as stories to be told rather that programs to be written. 
 
 ## Chapter 4 - Comments ## 
 
