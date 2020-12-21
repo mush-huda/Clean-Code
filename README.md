@@ -141,7 +141,63 @@ public Money calculatePay(Employee e) throws InvalidEmployeeType {
 * Don't expect to write functions in a perfect way from the start. Refactor, refactor and refactor!
 * Master programmers think of systems as stories to be told rather that programs to be written. 
 
-## Chapter 4 - Comments ## 
+## Chapter 4 - Comments ##
+* If out programming languages were expressive enough, or if we had the talent to subtly wield those languages to express out intent, we would not need comments very much -- perhabs not at all.
+* The proper use of comments is to compensate for our failure to express ourself in code. 
+* So when you find yourself in a position where you need to write a comment, think it through and see whether there isn't  some way to turn the tables and express yourself in code. 
+* Inaccurate comments are far worse than no comments at all. They delude and mislead. 
+* Truth can only be found in one place: *the code*. It is the only source of truly accurate information.
+#### Comments Do Not Make Up For Bad Code ####
+* One of the more common motivations for writing comments is bad code. We write a module and we know it is confusing and disorganized. So we tend to write comment. 
+* Rather than spend your time writing the comments that explain the mess you have made, spend it cleaning that mess. 
+#### Explain Yourself in Code ####
+* Don't:
+```
+  if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))
+```
+Do:
+```
+  if (employee.isEligibleForFullBenefits())
+```
+#### Good Comments ####
+* Some comments are necessary or beneficial:
+##### Legal Comments #####
+* Copyright and authorship statements are necessary and reasonable things to put into a comment at the start of each source file.
+##### Informative Comments #####
+* It's sometimes useful to provide basic information with a comment. Still try to use the name of the function to convey the information where possible.
+##### Explanation of Intent #####
+* Sometimes a comment can provide the intent behind a decision.
+##### Clarification #####
+* In general it is better to find a way to make obscure arguments or return value clear in its own right; but when its part of the standard library, or in code that you cannot alter, then it is just helpful to translate the meaning of some obscure argument or return value into something that's readable.
+##### Warning of Consequences #####
+* Sometimes it is useful to warn other programmers about certain consequences. 
+##### TODO Comments #####
+* `TODO`s are jobs that the programmer thinks should be done but for some reason can't do at the moment. It might be a reminder to delete a deprecated feature or a plea for someone else to look at a problem. 
+##### Amplification #####
+* A comment may be used to amplify the importance of something that may otherwise seem inconsequential.
+##### Javadocs in Public APIs #####
+* If you are writing a public API, then you should certainly write good javadocs for it. 
+#### Bad Comments ####
+##### Mumbling #####
+##### Redundant Comments #####
+##### Misleading Comments #####
+##### Mandated Comments #####
+##### Journal Comments #####
+##### Noise Comments #####
+##### Scary Noise #####
+##### Don't Use a Comment When You Can Use a Function or Variable #####
+##### Position Markers #####
+##### Closing Brace Comments #####
+##### Attributes and Bylines #####
+##### Commented-Out Code #####
+##### HTML Comments #####
+##### Nonlocal Information #####
+##### Too Much Information #####
+##### Inobvious Connection #####
+##### Function Headers #####
+##### Javadocs in Nonpublic Code #####
+
+
 
 ## Chapter 5 - Formatting ## 
 
