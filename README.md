@@ -237,7 +237,126 @@ Do:
 ## Chapter 6 - Objects and Data Structures ## 
 
 ## Chapter 7 - Error Handling ## 
+* Error handling is important, but if it's impossible to see what the code does because of all of the scattered error handling, then it's wrong.
+#### Use Exceptions Rather Than Return Codes ####
+* If you return codes the the caller must check for errors immediately after the call. It clutters the caller. 
+* It's always better to throw an exception when you encounter an error. 
+* The calling code is cleaner and it's logic is not obscured by error handling. 
+#### Write Your Try-Catch-Finally Statement First ####
+* In a way, `try` blocks are like transactions. Your `catch` block has to leave your program in a consistent state, no matter what happens in the `try`.
+* For this reason, it is a good practice to start with a `try-catch-finally` statement when you are writing code that could throw exceptions. 
+* This helps you define what the user of that code should expect, no matter what goes wrong with the code that is executed in the `try`. 
+* Try to write tests that force exceptions, and then add behavior to your handler to satisfy your tests. This will cause you to build the transaction scope of the `try` block first and will help you maintain the transaction nature of that scope. 
+#### Use Unchecked Exceptions ####
+* C#, C++, Python, Ruby don't have checked exceptions. Yet it is possible to write robust software in all of these languages. 
+* The price of checked exception is an Open/Closed Principle violation. If you throw a checked exception from a method in your code and the `catch` is three levels above, you must declare that exception in the signature of each method between you and the catch. 
+* This means that a change at a low level of the software can force signature changes on many higher levels. The changed modules must be rebuilt and redeployed, even though nothing they care about changed. 
+* Encapsulation is broken because all functions in the path of a throw must know about details of that low-level exception. 
+* Checked exceptions can sometimes be useful if you are writing a critical library: You must catch them. But in general application development the dependency costs outweigh the benefits. 
+#### Provide Context with Exceptions ####
+* Each exception that you throw should provide enough context to determine the source and location of an error.
+* In Java, you can get a stack trace from an exception; however, a stack trace can't tell you the intent of the operation that failed. 
+* Create informative error messages and pass them along with your exceptions. 
+* Mention the operation that failed and the type of failure. 
+* If you are using logging in your application, pass along enough information to be able to log the error in your `catch`.
+#### Define Exception Classes in Terms of a Caller's Needs ####
+* There are many ways to classify errors. We can classify them by their source: Did they come from one component or another? Or their type: Are they device failures, network failures, or programming errors?
+* However, when we define exception classes in an application, our most important concern shoudl be *how they are caught*.
+* Bad approach:
+```
+    ACMEPort port = new ACMEPort(12);
+    
+    try {
+       port.open();
+    } catch (DeviceResponseException e){
+       reportPortError(e);
+       logger.log("Device response exception", e);
+    } catch (ATM1212UnlockedException e){
+       reportPortError(e);
+       logger.log("Unlock exception", e);
+    } catch (GMXError e){
+       reportPortError(e);
+       logger.log("Device response exception", e);
+    } finally {
+       .....
+    }
+```
+* Better appraoch:
+```
+    LocalPort port = new LocalPort(12);
+    try {
+       port.open();
+    } catch (PortDeviceFailure e) {
+       reportError(e);
+       logger.log(e.getMessage(), e);
+    } finally {
+      .....
+    }
+```
 
+```
+     public class LocalPort {
+        private ACMEPort innerPort;
+        
+        public LocalPort(int portNumber) {
+          innerPort = new ACMEPort(portNumber);
+        }
+        
+        public void open() {
+           try {
+             innerPort.open();
+           } catch (DeviceResponseException e){
+              throw new PortDeviceFailure(e)
+           } catch (ATM1212UnlockedException e){
+              throw new PortDeviceFailure(e)
+           } catch (GMXError e){
+              throw new PortDeviceFailure(e)
+           } finally {
+              .....
+           }
+        }
+     }
+```
+* Wrapping third-party APIs is a best practice. When you wrap a third-party API, you minimize your dependencies upon it. You can move to a different library in the future without much penalty. 
+* Wrapping also makes it easier to mock out third-party calls when you are testing your own code. 
+#### Define the Normal Flow ####
+* *SPECIAL CASE PATTERN[Fowler]:* Create a class or configure an object so that it handles a special case for you. When you do, the client code doesn't have to deal with exceptional behavior. That behavior is encapsulated in the special case object.
+#### Don't Return Null ####
+* When we return `null`, we are essentially creating work for ourselves and foisting problems upon our callers. All it takes is one missing `null` check to send an application spinning out of control. 
+* Too many null checks in an application is a bad thing. 
+* Don't return `null` from a method. Consider throwing an exception or returning a *SPECIAL CASE* object instead. 
+* If you are calling a null-returning method from a third-party API, consider wrapping that method that either throws an exception or returns a special case object. 
+* In many cases, special case objects are an esasy remedy. Imagine that you have code like this: 
+
+```
+     List<Employee> employees = getEmployees();
+     if(employees != null) {
+        for(Employee e : employees) {
+          totalPay += e.getPay();
+        }
+     }
+```
+
+If we change `getEmployee` so that it returns an empty list we can clean up the code:
+
+```
+     List<Employee> employees = getEmployees();
+     for(Employee e : employees) {
+          totalPay += e.getPay();
+     }
+```
+
+```
+     public List<Employee> getEmployees() {
+        if(..there are no employees..)
+           return Collections.emptyList();
+     }     
+```
+#### Don't Pass Null ####
+* Returning `null` from methods is bad, but passing `null` into methods is *worse*.
+* Unless you are working within an API which expects you to pass `null`, you should avoid passing `null` in your code whenever possible.
+#### Conclusion ####
+* We can write robust clean code if we see error handling as a separate concern, something that is viewable independently of our main logic. 
 ## Chapter 8 - Boundaries ## 
 
 ## Chapter 9 - Unit Tests ## 
